@@ -1,0 +1,13 @@
+{
+  "type" : "object",
+  "properties" : {
+    "name" : {
+      "type" : "string",
+      "example" : "mobile"
+    },
+    "resolution" : {
+      "type" : "string",
+      "example" : "1024x768"
+    }
+  }
+}

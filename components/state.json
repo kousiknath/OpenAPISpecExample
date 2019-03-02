@@ -1,0 +1,19 @@
+{
+  "maxLength" : 50,
+  "minLength" : 1,
+  "type" : "string",
+  "example" : "Karnataka",
+  "x-enum" : [ {
+    "value" : "KA",
+    "description" : "Karnataka"
+  }, {
+    "value" : "AP",
+    "description" : "Andhra Pradesh"
+  }, {
+    "value" : "TN",
+    "description" : "Tamilnadu"
+  }, {
+    "value" : "MH",
+    "description" : "Maharasthra"
+  } ]
+}

@@ -1,0 +1,30 @@
+{
+  "required" : [ "md5", "password", "sha256", "username" ],
+  "type" : "object",
+  "properties" : {
+    "username" : {
+      "maxLength" : 10,
+      "minLength" : 4,
+      "type" : "string",
+      "example" : "user6474"
+    },
+    "password" : {
+      "maxLength" : 12,
+      "minLength" : 7,
+      "type" : "string",
+      "format" : "password"
+    },
+    "md5" : {
+      "maxLength" : 300,
+      "minLength" : 10,
+      "type" : "string",
+      "example" : "00b179d665b2250768c35b3809aea2dd"
+    },
+    "sha256" : {
+      "maxLength" : 300,
+      "minLength" : 10,
+      "type" : "string",
+      "example" : "9aef5245108513efc64ff9605bf216f47b8e423eff3c88342eace869656d5913"
+    }
+  }
+}

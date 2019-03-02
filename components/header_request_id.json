@@ -1,0 +1,10 @@
+{
+  "name": "X-Request-ID",
+  "example": "af153fa3-c51e-48b9-8c3e-80dfaf58b12b",
+  "in": "header",
+  "schema": {
+    "type": "string",
+    "format": "uuid"
+  },
+  "required": true
+}

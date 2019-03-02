@@ -1,0 +1,16 @@
+{
+  "required" : [ "description", "offset" ],
+  "type" : "object",
+  "properties" : {
+    "offset" : {
+      "maxLength" : 10,
+      "minLength" : 1,
+      "type" : "string",
+      "example" : "-4.00"
+    },
+    "description" : {
+      "type" : "string",
+      "example" : "Indian Standard Time (IST)"
+    }
+  }
+}

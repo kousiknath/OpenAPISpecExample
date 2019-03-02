@@ -1,0 +1,39 @@
+{
+    "required" : [ "contact", "dob", "gender", "id", "location", "login", "name" ],
+    "type" : "object",
+    "properties" : {
+      "id" : {
+        "maxLength" : 200,
+        "minLength" : 1,
+        "type" : "string",
+        "format" : "uuid"
+      },
+      "gender" : {
+        "type" : "string",
+        "example": "Male",
+        "maxLength" : 15,
+        "minLength" : 1
+      },
+      "name" : {
+        "$ref" : "./name.json"
+      },
+      "location" : {
+        "$ref" : "./location.json"
+      },
+      "contact" : {
+        "$ref" : "./contact.json"
+      },
+      "login" : {
+        "$ref" : "./login.json"
+      },
+      "dob" : {
+        "$ref" : "./dob.json"
+      },
+      "avatar" : {
+        "$ref" : "./avatar.json"
+      },
+      "device_preferences" : {
+        "$ref" : "./devices.json"
+      }
+    }
+  }

@@ -1,0 +1,256 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "Random User Generation",
+    "description": "Creates random user with basic details provided",
+    "contact": {
+      "email": "you@your-domain.com"
+    }
+  },
+  "host": "your-domain.com",
+  "basePath": "/api/1.0.0",
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "ApiKey": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-API-KEY"
+    },
+    "AppId": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-APP-ID"
+    },
+    "SessionKey": {
+      "type": "apiKey",
+      "in": "query",
+      "name": "SESSION-ID"
+    },
+    "OAuth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "https://your-auth-domain.com/oauth/authorize",
+      "tokenUrl": "https://your-auth-domain.com/oauth/token",
+      "scopes": {
+        "read": "Grants read access to user resources",
+        "write": "Grants write access to user resources",
+        "admin": "Grants read and write access to administrative information"
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth2": ["read"]
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "description": "User provides some basic details & this api creates a random user with those details",
+        "summary": "POST api to create a random user",
+        "operationId": "generate_user.post",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "OAuth2": ["read", "write"]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "The user provided basic details will be used to create a random user",
+            "schema": {
+              "$ref": "#/definitions/UserBasicDetails"
+            }
+          },
+          {
+            "$ref": "../../components/header_request_id.json"
+          },
+          {
+            "$ref": "../../components/header_client_id.json"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "headers": {
+              "X-RateLimit-Limit": {
+                "description": "Number of request per time window (hour / 5 min / 15 min)",
+                "schema": {
+                  "type": "number",
+                  "format": "integer"
+                }
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Number of request remaining per time window (hour / 5 min / 15 min)",
+                "schema": {
+                  "type": "number",
+                  "format": "integer"
+                }
+              }
+            },
+            "schema": {
+              "$ref": "../../components/user.json"
+            }
+          },
+          "400": {
+            "description": "invalid input, object invalid",
+            "schema": {
+              "$ref": "../../components/error.json"
+            }
+          },
+          "409": {
+            "description": "an existing item already exists",
+            "schema": {
+              "$ref": "../../components/error.json"
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "externalDocs": {
+          "url": "https://your-domain.com/api/docs/users",
+          "description": "See more on user operations."
+        }
+      }
+    },
+    "users/{user_id}": {
+      "get": {
+        "summary": "Fetch user details",
+        "description": "Fetch a particular user with / without specified attributes.",
+        "operationId": "users.get",
+        "security": [
+          {
+            "OAuth2": ["read"]
+          },
+          {
+            "ApiKey": [],
+            "ApiId": []
+          },
+          {
+            "BasicAuth": []
+          },
+          {
+            "SessionKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "The mandatory user id field for which user object will be fetched",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "attributes",
+            "in": "query",
+            "description": "Comma separated user attributes that will be fetched, if not specified, all attributes will be fetched",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "minimal",
+            "in": "query",
+            "description": "When set to true, returned user object will have only minimum necessary fields, otherwise verbose object will be returned",
+            "required": false,
+            "type": "boolean",
+            "enum": [true, false]
+          },
+          {
+            "$ref": "../../components/header_request_id.json"
+          },
+          {
+            "$ref": "../../components/header_client_id.json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "X-RateLimit-Limit": {
+                "description": "Number of request per time window (hour / 5 min / 15 min)",
+                "schema": {
+                  "type": "number",
+                  "format": "integer"
+                }
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Number of request remaining per time window (hour / 5 min / 15 min)",
+                "schema": {
+                  "type": "number",
+                  "format": "integer"
+                }
+              }
+            },
+            "schema": {
+              "$ref": "../../components/user.json"
+            }
+          },
+          "400": {
+            "description": "invalid request",
+            "schema": {
+              "$ref": "../../components/error.json"
+            }
+          },
+          "403": {
+            "description": "authorization failed",
+            "schema": {
+              "$ref": "../../components/error.json"
+            }
+          },
+          "404": {
+            "description": "resource not found",
+            "schema": {
+              "$ref": "../../components/error.json"
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "UserBasicDetails": {
+      "title": "UserBasicDetails",
+      "type": "object",
+      "properties": {
+        "name": {
+          "example": "Tony Stark",
+          "type": "string"
+        },
+        "gender": {
+          "example": "Male",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "gender"
+      ]
+    }
+  }
+}

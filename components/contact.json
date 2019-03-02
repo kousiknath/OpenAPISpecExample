@@ -1,0 +1,25 @@
+{
+  "required" : [ "email" ],
+  "type" : "object",
+  "properties" : {
+    "email" : {
+      "maxLength" : 200,
+      "minLength" : 1,
+      "type" : "string",
+      "format" : "email",
+      "example" : "user@mailserver.com"
+    },
+    "phone" : {
+      "maxLength" : 15,
+      "minLength" : 1,
+      "type" : "string",
+      "example" : "9097689009"
+    },
+    "cell" : {
+      "maxLength" : 15,
+      "minLength" : 1,
+      "type" : "string",
+      "example" : "7483-090303"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "string",
+      "example": "OPERATION_ABORTED"
+    },
+    "message": {
+      "type": "string",
+      "example": "Some Error occurred"
+    },
+    "link": {
+      "type": "string",
+      "example": "http://vist.doc",
+      "description": "Vist the link for more info about the error."
+    }
+  }
+}

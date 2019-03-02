@@ -1,0 +1,11 @@
+{
+  "name": "X-Client-Id",
+  "example": "546474",
+  "in": "header",
+  "schema": {
+    "type": "string",
+    "minLength": 10,
+    "maxLength": 20
+  },
+  "required": true
+}

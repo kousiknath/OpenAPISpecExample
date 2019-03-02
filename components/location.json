@@ -1,0 +1,33 @@
+{
+  "required" : [ "postcode", "street" ],
+  "type" : "object",
+  "properties" : {
+    "street" : {
+      "maxLength" : 100,
+      "minLength" : 1,
+      "type" : "string",
+      "example" : "112, Mallya Road"
+    },
+    "city" : {
+      "maxLength" : 100,
+      "minLength" : 1,
+      "type" : "string",
+      "example" : "Bangalore"
+    },
+    "state" : {
+      "$ref" : "./state.json"
+    },
+    "postcode" : {
+      "maxLength" : 6,
+      "minLength" : 6,
+      "type" : "string",
+      "example" : "879879"
+    },
+    "coordinates" : {
+      "$ref" : "./coordinate.json"
+    },
+    "timezone" : {
+      "$ref" : "./timezone.json"
+    }
+  }
+}

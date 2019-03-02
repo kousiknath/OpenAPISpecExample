@@ -1,0 +1,24 @@
+{
+  "required" : [ "thumbnail" ],
+  "type" : "object",
+  "properties" : {
+    "large" : {
+      "maxLength" : 200,
+      "minLength" : 5,
+      "type" : "string",
+      "example" : "https://randomuser.me/api/portraits/women/91.jpg"
+    },
+    "medium" : {
+      "maxLength" : 200,
+      "minLength" : 5,
+      "type" : "string",
+      "example" : "https://randomuser.me/api/portraits/med/women/91.jpg"
+    },
+    "thumbnail" : {
+      "maxLength" : 200,
+      "minLength" : 5,
+      "type" : "string",
+      "example" : "https://randomuser.me/api/portraits/thumb/women/91.jpg"
+    }
+  }
+}

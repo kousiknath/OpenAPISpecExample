@@ -1,0 +1,24 @@
+{
+    "required" : [ "first", "last", "title" ],
+    "type" : "object",
+    "properties" : {
+      "title" : {
+        "maxLength" : 5,
+        "minLength" : 1,
+        "type" : "string",
+        "example" : "Mr"
+      },
+      "first" : {
+        "maxLength" : 50,
+        "minLength" : 1,
+        "type" : "string",
+        "example" : "Alex"
+      },
+      "last" : {
+        "maxLength" : 50,
+        "minLength" : 1,
+        "type" : "string",
+        "example" : "Wood"
+      }
+    }
+}

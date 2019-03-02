@@ -1,0 +1,18 @@
+{
+  "required" : [ "latitude", "longitude" ],
+  "type" : "object",
+  "properties" : {
+    "latitude" : {
+      "maxLength" : 10,
+      "minLength" : 3,
+      "type" : "string",
+      "example" : "-27.5173"
+    },
+    "longitude" : {
+      "maxLength" : 10,
+      "minLength" : 3,
+      "type" : "string",
+      "example" : "64.149"
+    }
+  }
+}

@@ -1,0 +1,333 @@
+---
+openapi: 3.0.0
+info:
+  version: '1.0'
+  title: Random User Generation
+  description: Creates random user with basic details provided
+  contact:
+    email: you@your-domain.com
+security:
+- OAuth2:
+  - read
+servers:
+- url: https://your-domain.com/api/1.0.0
+paths:
+  "/users":
+    post:
+      description: |-
+        User provides some basic details & this api creates a random user with
+        those details
+      summary: POST api to create a random user
+      operationId: generate_user.post
+      deprecated: false
+      security:
+      - OAuth2:
+        - read
+        - write
+      parameters:
+      - "$ref": "../../components/header_request_id.json"
+      - "$ref": "../../components/header_client_id.json"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UserBasicDetails"
+        description: The user provided basic details will be used to create a random
+          user
+        required: true
+      responses:
+        '201':
+          description: ''
+          headers:
+            X-RateLimit-Limit:
+              description: Number of request per time window (hour / 5 min / 15 min)
+              schema:
+                type: number
+                format: integer
+            X-RateLimit-Remaining:
+              description: |-
+                Number of request remaining per time window (hour / 5 min / 15
+                min)
+              schema:
+                type: number
+                format: integer
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/user.json"
+          links:
+            GetUserById:
+              operationId: users.get
+              description: Retrieve the user with GET /users/{user_id} API using id
+                from the response body
+              parameters:
+                user_id: "$response.body#/id"
+        '400':
+          description: invalid input, object invalid
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/error.json"
+        '409':
+          description: an existing item already exists
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/error.json"
+      tags:
+      - users
+      externalDocs:
+        url: https://your-domain.com/api/docs/users
+        description: See more on user operations.
+  users/{user_id}:
+    get:
+      summary: Fetch user details
+      description: Fetch a particular user with / without specified attributes.
+      operationId: users.get
+      security:
+      - OAuth2:
+        - read
+      - ApiKey: []
+        ApiId: []
+      - BasicAuth: []
+      - SessionKey: []
+      - CookieAuth: []
+      parameters:
+      - name: user_id
+        in: path
+        description: The mandatory user id field for which user object will be fetched
+        required: true
+        schema:
+          type: string
+      - name: attributes
+        in: query
+        description: |-
+          Comma separated user attributes that will be fetched, if not
+          specified, all attributes will be fetched
+        required: false
+        schema:
+          type: string
+      - name: minimal
+        in: query
+        description: |-
+          When set to true, returned user object will have only minimum
+          necessary fields, otherwise verbose object will be returned
+        required: false
+        schema:
+          type: boolean
+          enum:
+          - true
+          - false
+      - "$ref": "../../components/header_request_id.json"
+      - "$ref": "../../components/header_client_id.json"
+      responses:
+        '200':
+          headers:
+            X-RateLimit-Limit:
+              description: Number of request per time window (hour / 5 min / 15 min)
+              schema:
+                type: number
+                format: integer
+            X-RateLimit-Remaining:
+              description: |-
+                Number of request remaining per time window (hour / 5 min / 15
+                min)
+              schema:
+                type: number
+                format: integer
+          description: ''
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/user.json"
+        '400':
+          description: invalid request
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/error.json"
+        '403':
+          description: authorization failed
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/error.json"
+        '404':
+          description: resource not found
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/error.json"
+      tags:
+      - users
+  "/login":
+    post:
+      summary: User login api
+      description: API which takes username & password or mobile no & otp to login
+        user.
+      operationId: users.login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/requestBodies/EmailLoginRequest"
+      callbacks:
+        loginEvent:
+          "{$request.body#/callback/url}":
+            post:
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                          example: Login happened, please process the event.
+      responses:
+        '200':
+          headers:
+            Set-Cookie:
+              description: Session key is set in cookie named SESSION_ID
+              schema:
+                type: string
+                example: SESSION_ID=hfuy8747b7gb4dgy466t46; Path=/; HttpOnly
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/user.json"
+              examples:
+                ex1:
+                  id: 90d640ab-548a-4a72-a89e-b86cdf4f1887
+                  gender: Male
+                  name:
+                    title: Mr.
+                    first: Kousik
+                    last: Nath
+                  contact:
+                    email: you@your-domain.com
+                    phone: '140000'
+                    cell: '9090909090'
+                ex2:
+                  id: 4f7386f6-3c89-11e9-b210-d663bd873d93
+                  gender: Female
+                  name:
+                    title: Mrs.
+                    first: XYZ
+                    last: ABC
+                  contact:
+                    email: xyz@abc.com
+                    phone: '111200'
+                    cell: '9090909090'
+          links:
+            GetUserById:
+              "$ref": "#/components/links/GetUserById"
+        '400':
+          description: invalid request
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/error.json"
+        '403':
+          description: authorization failed
+          content:
+            application/json:
+              schema:
+                "$ref": "../../components/error.json"
+      tags:
+      - login
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKey:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+    AppId:
+      type: apiKey
+      in: header
+      name: X-APP-ID
+    SessionKey:
+      type: apiKey
+      in: query
+      name: SESSION-ID
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://your-auth-domain.com/oauth/authorize
+          tokenUrl: https://your-auth-domain.com/oauth/token
+          scopes:
+            read: Grants read access to user resources
+            write: Grants write access to user resources
+            admin: Grants read and write access to administrative information
+    CookieAuth:
+      type: apiKey
+      in: cookie
+      name: SESSION_ID
+  schemas:
+    UserBasicDetails:
+      title: UserBasicDetails
+      type: object
+      properties:
+        name:
+          example: Tony Stark
+          type: string
+        gender:
+          example: Male
+          type: string
+      required:
+      - name
+      - gender
+    LoginCallback:
+      title: LoginCallback
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          example: https://your-domain.com/api/callbacks/login
+  requestBodies:
+    EmailLoginRequest:
+      title: Email Login request body
+      type: object
+      required:
+      - email
+      - password
+      - callback
+      properties:
+        email:
+          example: your_alias@your-domain.com
+          type: string
+        password:
+          example: test
+          type: string
+        callback:
+          "$ref": "#/components/schemas/LoginCallback"
+    MobileLoginRequest:
+      title: Mobile Login request body
+      type: object
+      required:
+      - mobile_no
+      - otp
+      - callback
+      properties:
+        mobile_no:
+          example: "+91-9090909092"
+          type: string
+        otp:
+          example: '748019'
+          type: string
+        callback:
+          "$ref": "#/components/schemas/LoginCallback"
+  links:
+    GetUserById:
+      description: Retrieve the user with GET /users/{user_id} API using `id` from
+        the response body
+      operationId: users.get
+      parameters:
+        user_id: "$response.body#/id"
