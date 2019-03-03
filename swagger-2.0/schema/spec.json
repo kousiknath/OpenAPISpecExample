@@ -132,7 +132,7 @@
         }
       }
     },
-    "users/{user_id}": {
+    "/users/{user_id}": {
       "get": {
         "summary": "Fetch user details",
         "description": "Fetch a particular user with / without specified attributes.",
